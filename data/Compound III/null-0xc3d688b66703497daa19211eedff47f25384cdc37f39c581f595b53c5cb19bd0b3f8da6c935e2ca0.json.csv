@@ -1,0 +1,2 @@
+blockNumber,hourlyBorrowUSD,hourlyDepositUSD,hourlyRepayUSD,hourlyWithdrawUSD,id,inputToken,name,protocol,timestamp,totalBorrowBalanceUSD,totalDepositBalanceUSD,totalValueLockedUSD,lenderRate,borrowRate
+20411383,0,0,0,0,0xc3d688b66703497daa19211eedff47f25384cdc37f39c581f595b53c5cb19bd0b3f8da6c935e2ca0,wstETH,null,Compound III,1722246047,0,0,0,null,null
