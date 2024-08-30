@@ -4,13 +4,15 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 
-# Function to create the smaller GRU model with regularization
-def create_smaller_model(input_shape):
+# Function to create the GRU model
+def create_model(input_shape):
     model = tf.keras.models.Sequential([
-        tf.keras.layers.GRU(64, return_sequences=True, input_shape=input_shape, dropout=0.2, recurrent_dropout=0.2),
-        tf.keras.layers.GRU(128, return_sequences=True, dropout=0.2, recurrent_dropout=0.2),
-        tf.keras.layers.GRU(64, dropout=0.3, recurrent_dropout=0.3),
-        tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(0.01))  # L2 regularization on the final layer
+        tf.keras.layers.GRU(96, return_sequences=True, input_shape=input_shape),
+        tf.keras.layers.GRU(352, return_sequences=True),
+        tf.keras.layers.GRU(96, return_sequences=True),
+        tf.keras.layers.GRU(416, return_sequences=True),
+        tf.keras.layers.GRU(512),
+        tf.keras.layers.Dense(1)
     ])
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
                   loss='mse',
@@ -37,7 +39,7 @@ def train_and_save_model(df, feature_columns, target_column, save_path):
     X_test = scaler.transform(X_test)
 
     # Build the smaller GRU model with regularization
-    model = create_smaller_model(input_shape=(1, X_train.shape[1]))
+    model = create_model(input_shape=(1, X_train.shape[1]))
 
     # Reshape data for GRU input
     X_train_reshaped = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
@@ -77,11 +79,12 @@ for root, dirs, files in os.walk(data_root):
             
             # Remove rows with NaN values in borrowRate or lenderRate
             df = df.dropna(subset=['borrowRate', 'lenderRate'])
-
+            if df.empty:
+                    continue
             # Extract protocol and asset information
             protocol = os.path.basename(root)
-            asset = df['inputToken'].iloc[0].strip()
-            
+            asset = df['inputToken'].iloc[0]
+            print(protocol,asset)
             # Create model save paths with .keras extension
             model_folder = os.path.join(model_root, protocol)
             os.makedirs(model_folder, exist_ok=True)
