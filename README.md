@@ -1,4 +1,4 @@
-# DeFi APY Prediction Model
+# DeFi APY Prediction Modelling
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -241,4 +241,4 @@ Contributions to this project are welcome! Please follow these steps:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+TODO: Work on the licence
