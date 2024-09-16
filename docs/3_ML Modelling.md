@@ -201,7 +201,7 @@ print(f"RMSE: {rmse}")
 
 ## Architecture Diagram: ML Problem Definition and Model Pipeline
 
-Below is an architecture diagram that outlines the flow from problem definition, through data preprocessing, to model training and deployment:
+Below is a simplified architecture diagram that outlines the flow from problem definition, through data preprocessing, to model training and deployment:
 
 ```plaintext
 +------------------+        +-------------------------+        +--------------------+
