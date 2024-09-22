@@ -1,5 +1,6 @@
 # Data settings
 data_dir: "data/raw/"
+output_dir: "output/"
 
 # Target columns
 target_columns:
@@ -18,8 +19,8 @@ feature_columns:
 
 # Model settings
 model_settings:
-  sequence_length: 24  # Number of hours to use as input sequence
-  forecast_horizon: 1  # Number of hours to forecast
+  sequence_length: 24
+  forecast_horizon: 1
 
 # Training settings
 training_settings:
@@ -43,6 +44,5 @@ evaluation_metrics:
   - "mae"
   - "r2"
 
-# Logging and output
-output_dir: "output/"
+# Logging level
 log_level: "INFO"

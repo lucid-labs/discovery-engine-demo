@@ -1,8 +1,6 @@
-from typing import List, Tuple
-
 import tensorflow as tf
+from typing import List, Tuple
 from tqdm import tqdm
-
 
 class NeuralArchitectureSearch:
     def __init__(self, input_shape: Tuple[int, int], output_shape: int):
@@ -34,31 +32,30 @@ class NeuralArchitectureSearch:
 
         return best_model
 
-
     def _create_lstm_model(self) -> tf.keras.Model:
-        model = tf.keras.Sequential([
-            tf.keras.layers.LSTM(64, input_shape=self.input_shape, return_sequences=True),
-            tf.keras.layers.LSTM(32),
-            tf.keras.layers.Dense(self.output_shape)
-        ])
+        inputs = tf.keras.layers.Input(shape=self.input_shape)
+        x = tf.keras.layers.LSTM(64, return_sequences=True)(inputs)
+        x = tf.keras.layers.LSTM(32)(x)
+        outputs = tf.keras.layers.Dense(self.output_shape)(x)
+        model = tf.keras.Model(inputs=inputs, outputs=outputs)
         model.compile(optimizer='adam', loss='mse')
         return model
 
     def _create_gru_model(self) -> tf.keras.Model:
-        model = tf.keras.Sequential([
-            tf.keras.layers.GRU(64, input_shape=self.input_shape, return_sequences=True),
-            tf.keras.layers.GRU(32),
-            tf.keras.layers.Dense(self.output_shape)
-        ])
+        inputs = tf.keras.layers.Input(shape=self.input_shape)
+        x = tf.keras.layers.GRU(64, return_sequences=True)(inputs)
+        x = tf.keras.layers.GRU(32)(x)
+        outputs = tf.keras.layers.Dense(self.output_shape)(x)
+        model = tf.keras.Model(inputs=inputs, outputs=outputs)
         model.compile(optimizer='adam', loss='mse')
         return model
 
     def _create_transformer_model(self) -> tf.keras.Model:
-        model = tf.keras.Sequential([
-            tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation='relu', input_shape=self.input_shape),
-            tf.keras.layers.GlobalAveragePooling1D(),
-            tf.keras.layers.Dense(32, activation='relu'),
-            tf.keras.layers.Dense(self.output_shape)
-        ])
+        inputs = tf.keras.layers.Input(shape=self.input_shape)
+        x = tf.keras.layers.Conv1D(filters=64, kernel_size=1, activation='relu')(inputs)
+        x = tf.keras.layers.GlobalAveragePooling1D()(x)
+        x = tf.keras.layers.Dense(32, activation='relu')(x)
+        outputs = tf.keras.layers.Dense(self.output_shape)(x)
+        model = tf.keras.Model(inputs=inputs, outputs=outputs)
         model.compile(optimizer='adam', loss='mse')
         return model
