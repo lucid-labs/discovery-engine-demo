@@ -1,0 +1,11 @@
+version: '3'
+services:
+  apy_prediction:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    ports:
+      - "8888:8888"
+    environment:
+      - PYTHONUNBUFFERED=1

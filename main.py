@@ -1,4 +1,5 @@
 import yaml
+import logging
 from src.data_processing.data_loader import DataLoader
 from src.data_processing.data_preprocessor import DataPreprocessor
 from src.feature_engineering.feature_transformer import FeatureTransformer
@@ -7,6 +8,8 @@ from src.training.trainer import ModelTrainer
 from src.evaluation.evaluator import ModelEvaluator
 from src.hyperparameter_optimization.optimizer import HyperparameterOptimizer
 
+logging.basicConfig(level=logging.INFO)
+
 def load_config(config_path: str) -> dict:
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
@@ -14,12 +17,19 @@ def load_config(config_path: str) -> dict:
 def main():
     # Load configuration
     config = load_config('configs/config.yaml')
+    logging.info("Configuration loaded")
 
     # Load and preprocess data
     data_loader = DataLoader(config['data_dir'])
     data_dict = data_loader.load_csv_files()
-    merged_data = data_loader.merge_dataframes(list(data_dict.values()))
+    
+    if not data_dict:
+        logging.error("No data loaded. Exiting.")
+        return
 
+    merged_data = data_loader.merge_dataframes(data_dict)
+
+    # Continue with preprocessing and model training
     preprocessor = DataPreprocessor(config['target_columns'])
     preprocessed_data = preprocessor.preprocess(merged_data)
     train_data, test_data = preprocessor.split_data(preprocessed_data)

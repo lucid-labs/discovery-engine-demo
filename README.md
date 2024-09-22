@@ -1,9 +1,11 @@
-# DeFi APY Prediction Modelling
+# DeFi APY Prediction Model
 
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
 3. [Setup](#setup)
+   - [Using Docker (Recommended)](#using-docker-recommended)
+   - [Manual Setup](#manual-setup)
 4. [Configuration](#configuration)
 5. [Usage](#usage)
 6. [Example: Supply/Borrow APY Prediction](#example-supplyborrow-apy-prediction)
@@ -22,6 +24,7 @@ Key features:
 - Neural architecture search to find the best model structure
 - Hyperparameter optimization using Optuna
 - Comprehensive evaluation metrics
+- Docker support for easy setup and deployment
 
 ## Project Structure
 
@@ -31,16 +34,38 @@ project/
 │   └── raw/
 ├── src/
 │   ├── data_processing/
+│   │   ├── __init__.py
+│   │   ├── data_loader.py
+│   │   └── data_preprocessor.py
 │   ├── feature_engineering/
+│   │   ├── __init__.py
+│   │   └── feature_transformer.py
 │   ├── models/
+│   │   ├── __init__.py
+│   │   ├── base_model.py
+│   │   ├── lstm_model.py
+│   │   ├── gru_model.py
+│   │   └── transformer_model.py
 │   ├── architecture_search/
+│   │   ├── __init__.py
+│   │   └── nas.py
 │   ├── training/
+│   │   ├── __init__.py
+│   │   └── trainer.py
 │   ├── evaluation/
+│   │   ├── __init__.py
+│   │   └── evaluator.py
 │   └── hyperparameter_optimization/
+│       ├── __init__.py
+│       └── optimizer.py
 ├── notebooks/
+│   └── exploratory_analysis.ipynb
 ├── configs/
+│   └── config.yaml
 ├── main.py
 ├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
 └── README.md
 ```
 
@@ -49,14 +74,34 @@ project/
 - `notebooks/`: Jupyter notebooks for exploratory data analysis
 - `configs/`: Configuration files (YAML)
 - `main.py`: Main script to run the entire pipeline
+- `Dockerfile`: Instructions for building the Docker image
+- `docker-compose.yml`: Docker Compose configuration file
 
 ## Setup
 
+### Using Docker (Recommended)
+
+1. Install Docker and Docker Compose on your system.
+
+2. Clone the repository:
+   ```
+   git clone https://github.com/your-username/defi-apy-prediction.git
+   cd defi-apy-prediction
+   ```
+
+3. Build and run the Docker container:
+   ```
+   docker-compose up --build
+   ```
+
+   This command will build the Docker image and start the container. The application will be accessible at `http://localhost:8888`.
+
+### Manual Setup
+
 1. Clone the repository:
    ```
-   git clone https://github.com/lucid-labs/discovery-engine-demo
-   cd discovery-engine-demo
-
+   git clone https://github.com/your-username/defi-apy-prediction.git
+   cd defi-apy-prediction
    ```
 
 2. Create a virtual environment (optional but recommended):
@@ -133,7 +178,13 @@ To run the APY prediction model:
 
 1. Ensure your CSV files are in the `data/raw/` directory.
 2. Adjust the `configs/config.yaml` file as needed.
-3. Run the main script:
+
+3. If using Docker:
+   ```
+   docker-compose up
+   ```
+
+   If not using Docker:
    ```
    python main.py
    ```
@@ -172,7 +223,9 @@ Let's walk through a detailed example of predicting supply and borrow APY for a 
 3. Run the Model:
    Execute the main script:
    ```
-   python main.py
+   docker-compose up  # If using Docker
+   # OR
+   python main.py     # If not using Docker
    ```
 
 4. Interpret the Results:
@@ -222,12 +275,19 @@ Common issues and their solutions:
 
 1. "FileNotFoundError: [Errno 2] No such file or directory: 'data/raw/'"
    - Ensure that you have created the `data/raw/` directory and placed your CSV files there.
+   - If using Docker, make sure the volume is correctly mounted in the `docker-compose.yml` file.
 
 2. "KeyError: 'lenderRate'"
    - Check that your CSV files contain the columns specified in the `target_columns` and `feature_columns` in the config file.
 
 3. "ValueError: Input contains NaN, infinity or a value too large for dtype('float32')"
    - Your data may contain invalid values. Add additional data cleaning steps in the `DataPreprocessor` class.
+
+4. Docker-related issues:
+   - "Error: Cannot connect to the Docker daemon."
+     - Ensure that the Docker daemon is running on your system.
+   - "Error: Port is already allocated."
+     - Change the port mapping in the `docker-compose.yml` file if port 8888 is already in use.
 
 ## Contributing
 
@@ -241,4 +301,4 @@ Contributions to this project are welcome! Please follow these steps:
 
 ## License
 
-TODO: Work on the licence
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
