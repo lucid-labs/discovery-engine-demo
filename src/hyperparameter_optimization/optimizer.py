@@ -1,5 +1,7 @@
-import optuna
 from typing import Callable
+
+import optuna
+
 
 class HyperparameterOptimizer:
     def __init__(self, objective: Callable, n_trials: int = 100):

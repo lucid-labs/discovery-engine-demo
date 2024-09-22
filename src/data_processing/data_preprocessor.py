@@ -1,5 +1,7 @@
-import pandas as pd
 from typing import List
+
+import pandas as pd
+
 
 class DataPreprocessor:
     def __init__(self, target_columns: List[str]):

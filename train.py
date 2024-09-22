@@ -1,8 +1,10 @@
 import os
-import pandas as pd
+
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+import pandas as pd
 import tensorflow as tf
+from sklearn.preprocessing import StandardScaler
+
 
 # Function to create the GRU model
 def create_model(input_shape):

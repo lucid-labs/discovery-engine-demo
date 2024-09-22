@@ -1,5 +1,8 @@
-import tensorflow as tf
 from typing import List, Tuple
+
+import tensorflow as tf
+from tqdm import tqdm
+
 
 class NeuralArchitectureSearch:
     def __init__(self, input_shape: Tuple[int, int], output_shape: int):
@@ -16,16 +19,21 @@ class NeuralArchitectureSearch:
         best_model = None
         best_val_loss = float('inf')
 
-        for create_model in architectures:
-            model = create_model()
-            model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_val, y_val), verbose=0)
-            val_loss = model.evaluate(X_val, y_val, verbose=0)
+        with tqdm(total=len(architectures), desc="Neural Architecture Search") as pbar:
+            for create_model in architectures:
+                model = create_model()
+                model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_val, y_val), verbose=0)
+                val_loss = model.evaluate(X_val, y_val, verbose=0)
 
-            if val_loss < best_val_loss:
-                best_val_loss = val_loss
-                best_model = model
+                if val_loss < best_val_loss:
+                    best_val_loss = val_loss
+                    best_model = model
+
+                pbar.update(1)
+                pbar.set_postfix({"Best Val Loss": best_val_loss})
 
         return best_model
+
 
     def _create_lstm_model(self) -> tf.keras.Model:
         model = tf.keras.Sequential([
