@@ -1,4 +1,3 @@
-from typing import Tuple
 
 import tensorflow as tf
 from tqdm import tqdm

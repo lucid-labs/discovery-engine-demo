@@ -1,5 +1,5 @@
 import tensorflow as tf
-from typing import List, Tuple
+from typing import Tuple
 from tqdm import tqdm
 
 class NeuralArchitectureSearch:
