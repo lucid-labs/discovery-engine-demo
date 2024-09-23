@@ -9,9 +9,4 @@ class ModelEvaluator:
         mae = mean_absolute_error(y_test, y_pred)
         r2 = r2_score(y_test, y_pred)
 
-        return {
-            'mse': mse,
-            'rmse': np.sqrt(mse),
-            'mae': mae,
-            'r2': r2
-        }
+        return {"mse": mse, "rmse": np.sqrt(mse), "mae": mae, "r2": r2}
